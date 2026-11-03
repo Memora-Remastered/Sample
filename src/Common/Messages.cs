@@ -1,5 +1,3 @@
 namespace Sample.Common;
 
-public class Messages
-{
-}
+public class Messages;

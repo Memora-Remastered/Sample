@@ -1,17 +1,10 @@
 namespace Sample.Application.Queries.GetNote;
 
-public sealed class GetNoteHandler : BaseService<Messages>, IRequestHandler<GetNoteRequest, TResponse<GetNoteResponse>>
+public sealed class GetNoteHandler(INoteService notes, IStringLocalizer<Messages> localizer) : BaseService<Messages>(localizer), IRequestHandler<GetNoteRequest, TResponse<GetNoteResponse>>
 {
-    private readonly INoteService _notes;
-
-    public GetNoteHandler(INoteService notes, IStringLocalizer<Messages> localizer) : base(localizer)
-    {
-        _notes = notes;
-    }
-
     public async Task<TResponse<GetNoteResponse>> Handle(GetNoteRequest request, CancellationToken cancellationToken)
     {
-        var dto = await _notes.GetAsync(request.Id, cancellationToken);
+        var dto = await notes.GetAsync(request.Id, cancellationToken);
         if (dto is null)
             return await FailAsync<GetNoteResponse>(StatusCodes.NoteNotFound);
 

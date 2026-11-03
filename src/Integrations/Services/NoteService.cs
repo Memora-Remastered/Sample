@@ -44,7 +44,7 @@ public sealed class NoteService(Client supabaseClient, PaginationConfigs paginat
             .Range(offset, offset + pageSize - 1)
             .Get(cancellationToken, Supabase.Postgrest.Constants.CountType.Exact);
 
-        var rows = response.Models.Select(ToDto).ToList();
+        var rows = response.Models.ConvertAll(ToDto);
         return new PagingResponse<NoteDto>(rows, response.Count, page, pageSize, _request.Current.RequestUrl);
     }
 
